@@ -17,10 +17,9 @@ import { InputComponent } from '../../components/input';
 
 
 export default function Login() {
-    
+
     const [userName, setUserName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-  
 
     const [openModalSingUp, setOpenModalSingUp] = useState<boolean>(false)
 
@@ -37,13 +36,16 @@ export default function Login() {
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                 />
-                <InputPassword 
-                     type="text"
-                     placeholder="Senha"
-                     value={password}
-                     onChange={(e) => setPassword(e.target.value)}
+                <InputPassword
+                    type="text"
+                    placeholder="Senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
-                <ButtonLogin type="primary">
+                <ButtonLogin
+                    type="primary"
+                   
+                >
                     <TextBtn>
                         Entrar
                     </TextBtn>
@@ -62,7 +64,7 @@ export default function Login() {
                     <TextBtn>Cadastre-se</TextBtn>
                 </ButtonSingUp>
 
-                <ModalSingUp openModal={openModalSingUp} setOpenModal={setOpenModalSingUp}/>
+                <ModalSingUp openModal={openModalSingUp} setOpenModal={setOpenModalSingUp} />
             </LoginCard>
         </LoginContainer>
     )

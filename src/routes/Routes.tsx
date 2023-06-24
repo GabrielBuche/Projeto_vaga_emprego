@@ -1,13 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import Login from '../pages/login'
-import  Home  from '../pages/budget'
+import RegisterBudget from '../pages/registerBudget'
+import  Budget  from '../pages/budget'
 
 export default function AuthRoutes() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<Login />} />
+                <Route  element={<Budget />} />
+                <Route index element={<RegisterBudget/>} />
             </Routes>
         </BrowserRouter>
     )
