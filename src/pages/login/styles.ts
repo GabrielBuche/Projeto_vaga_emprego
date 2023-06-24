@@ -1,5 +1,4 @@
 import { Button, Input, Modal } from 'antd';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 
@@ -24,30 +23,7 @@ export const LoginCard = styled.div`
   align-items: center;
 `;
 
-export const PasswordContainer = styled.div`
-  position: relative;
-  width: 100%;
-`;
 
-export const StyledInput = styled(Input)`
-  width: 100%;
-  height: 50px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-`;
-
-export const PasswordToggle = styled(Button)`
-  position: absolute;
-  top: 45%;
-  right: 8px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-`;
 
 export const ButtonLogin = styled(Button)`
   width: 100%;

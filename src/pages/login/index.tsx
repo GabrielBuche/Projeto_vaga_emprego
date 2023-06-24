@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import {
     LoginContainer,
-    PasswordContainer,
     LoginCard,
-    PasswordToggle,
-    StyledInput,
     ButtonLogin,
     TextBtn,
     SingUp,
@@ -13,29 +9,20 @@ import {
     Text,
     LineSeparator,
     ButtonSingUp,
-    ModalCard,
-    ModalContent
 } from './styles'
+
+import { ModalSingUp } from '../../components/modalSingUp';
+import { InputPassword } from '../../components/InputPassword';
+import { InputComponent } from '../../components/input';
 
 
 export default function Login() {
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+    
     const [userName, setUserName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+  
+
     const [openModalSingUp, setOpenModalSingUp] = useState<boolean>(false)
-
-    const handlePasswordToggle = () => {
-        setShowPassword(!showPassword);
-    };
-
-
-    const handleUsernameChange = (event: any) => {
-        setUserName(event.target.value);
-    };
-
-    const handlePasswordChange = (event: any) => {
-        setPassword(event.target.value);
-    };
 
     function HandleClickSingUp() {
         setOpenModalSingUp(!openModalSingUp);
@@ -44,25 +31,18 @@ export default function Login() {
     return (
         <LoginContainer>
             <LoginCard>
-                <StyledInput
+                <InputComponent
                     type="text"
                     placeholder="Usuário"
                     value={userName}
-                    onChange={handleUsernameChange}
+                    onChange={(e) => setUserName(e.target.value)}
                 />
-                <PasswordContainer>
-                    <StyledInput
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="Senha"
-                        value={password}
-                        onChange={handlePasswordChange}
-                    />
-                    <PasswordToggle
-                        type="text"
-                        onClick={handlePasswordToggle}
-                        icon={showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-                    />
-                </PasswordContainer>
+                <InputPassword 
+                     type="text"
+                     placeholder="Senha"
+                     value={password}
+                     onChange={(e) => setPassword(e.target.value)}
+                />
                 <ButtonLogin type="primary">
                     <TextBtn>
                         Entrar
@@ -81,16 +61,9 @@ export default function Login() {
                 >
                     <TextBtn>Cadastre-se</TextBtn>
                 </ButtonSingUp>
+
+                <ModalSingUp openModal={openModalSingUp} setOpenModal={setOpenModalSingUp}/>
             </LoginCard>
-            <ModalCard
-                title="Cadastre-se"
-                open={openModalSingUp}
-            >
-                <ModalContent>
-
-
-                </ModalContent>
-            </ModalCard>
         </LoginContainer>
     )
 }
