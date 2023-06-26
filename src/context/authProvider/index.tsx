@@ -1,8 +1,8 @@
 import { createContext, useState } from 'react';
-import { IAuthProvider, IContext, IUser } from '../../types';
+import { IAuthProvider, IAuthContext, IUser } from '../../types';
 import { LoginRequest, RegisterRequest, setUserLocalStorage } from './utils';
 
-export const AuthContext = createContext<IContext>({} as IContext);
+export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
     const [user, setUser] = useState<IUser | null>()

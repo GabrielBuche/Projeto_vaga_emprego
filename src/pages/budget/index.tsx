@@ -1,101 +1,97 @@
+import { useEffect } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import { Input, Space, Tag } from 'antd';
-import  MenuComponent  from '../../components/Menu'
+import MenuComponent from '../../components/Menu'
 import { TableComponent } from '../../components/table';
 import { Container } from './styles'
 import { useState } from 'react';
+import { UseProducts } from '../../context/ProducstProvider/useProducts';
 
 
 interface DataType {
     key: string;
     name: string;
-    age: number;
-    address: string;
-    tags: string[];
+    company: number;
+    value: string;
+    // tags: string[];
 }
 
 export default function Budget() {
+    const { ListProducts } = UseProducts()
     const [searchText, setSearchText] = useState('');
+    const [data, setData] = useState([]);
     const { Search } = Input;
 
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
+    useEffect(() => {
+        CallData()
+    }, [])
 
-    const columns: ColumnsType<DataType> = [
+    async function CallData() {
+        const response = await ListProducts()
+        setData(response)
+    }
+
+    const columns = [
         {
-            title: 'Name',
+            title: 'Nome',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Empresa',
+            dataIndex: 'company',
+            key: 'company',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Valor',
+            dataIndex: 'value',
+            key: 'value',
         },
         {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="large">
-                    <a> {record.name}</a>
-                    <a>Aprovar</a>
-                </Space>
-            ),
-        },
-    ];
+            title: 'Descrição',
+            dataIndex: 'description',
+            key: 'description',
+        }
+    ]
+
+
+    //     {
+    //         title: 'Tags',
+    //         key: 'tags',
+    //         dataIndex: 'tags',
+    //         render: (_, { tags }) => (
+    //             <>
+    //                 {tags.map((tag) => {
+    //                     let color = tag.length > 5 ? 'geekblue' : 'green';
+    //                     if (tag === 'loser') {
+    //                         color = 'volcano';
+    //                     }
+    //                     return (
+    //                         <Tag color={color} key={tag}>
+    //                             {tag.toUpperCase()}
+    //                         </Tag>
+    //                     );
+    //                 })}
+    //             </>
+    //         ),
+    //     },
+    //     {
+    //         title: 'Action',
+    //         key: 'action',
+    //         render: (_, record) => (
+    //             <Space size="large">
+    //                 <a> {record.name}</a>
+    //                 <a>Aprovar</a>
+    //             </Space>
+    //         ),
+    //     },
+    
 
     const filteredData = data.filter(item =>
         Object.values(item).some(value =>
-          String(value).toLowerCase().includes(searchText.toLowerCase())
+            String(value).toLowerCase().includes(searchText.toLowerCase())
         )
-      );
+    );
 
     return (
         <Container>

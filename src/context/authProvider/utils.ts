@@ -48,7 +48,12 @@ export async function RegisterRequest(name: string, email: string, password: str
 }
 export async function Logout() {
     try {
-        const response = await api.post('logout')
+        const response = await api.post('logout', {
+            headers: {
+                'Authorization': `Bearer ${getUserLocalStorage().token}`
+            }
+        })
+        
         clearUserLocalStorage()
         return response;
 

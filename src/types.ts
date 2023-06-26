@@ -3,7 +3,7 @@ export interface IUser {
     token?: string;
 }
 
-export interface IContext extends IUser {
+export interface IAuthContext extends IUser {
     Authenticate: (
         email: string,
         password: string,
@@ -20,5 +20,13 @@ export interface IContext extends IUser {
 }
 
 export interface IAuthProvider {
+    children: JSX.Element;
+}
+
+export interface IProductContext {
+    ListProducts: () => Promise<any>;
+}
+
+export interface IProductProvider {
     children: JSX.Element;
 }

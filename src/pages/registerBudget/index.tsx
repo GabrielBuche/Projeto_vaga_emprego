@@ -3,11 +3,31 @@ import { Container, Content } from './styles'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Space } from 'antd';
 
-const onFinish = (values: any) => {
-    console.log('Received values of form:', values);
-};
 
+  
 export default function RegisterBudget() {
+
+    const onFinish = (values: any) => {
+        console.log('Received values of form:', values);
+        const products = values.users;
+        const enterpriseSet = new Set<string>();
+    
+        for (const product of products) {
+          const enterprise = product.enterprise;
+          if (enterpriseSet.has(enterprise)) {
+            throw new Error('Não é permitido cadastrar a mesma empresa mais de uma vez');
+          }
+          enterpriseSet.add(enterprise);
+        }
+      
+        for (const product of products) {            
+          if (products.length <= 3) {
+            throw new Error('É necessário cadastrar pelo menos 3 itens do mesmo produto');
+          }
+          console.log(products);
+          
+        }
+    }
 
     return (
         <Container>
