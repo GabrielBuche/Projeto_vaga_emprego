@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserOutlined, FormOutlined, LogoutOutlined, FileSearchOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
+import { useAuth } from '../../context/authProvider/useAuth';
 
 interface MenuProps {
   children: React.ReactNode;
@@ -9,37 +10,35 @@ interface MenuProps {
 
 function MenuComponent({ children }: MenuProps) {
   const location = useLocation();
+  const { Logout } = useAuth()
   const [selected, setSelected] = useState<string>(location.pathname);
   const { Header, Content, Footer, Sider } = Layout;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const handleMenuClick = (key: string) => {
-    setSelected(key);
-  };
 
-  // Atualiza o estado 'selected' quando a rota muda
   useEffect(() => {
     setSelected(location.pathname);
   }, [location.pathname]);
+
+  const handleMenuClick = (key: string) => {
+    setSelected(key);
+    if (key === '4') {
+      Logout()
+    }
+  };
 
   return (
     <Layout>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
       >
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" selectedKeys={[selected]} onClick={({ key }) => handleMenuClick(key)}>
-          <Menu.Item key="/" icon={<UserOutlined />}>
-            <Link to="/">Profile</Link>
+          <Menu.Item  icon={<UserOutlined />}>
+            Profile
           </Menu.Item>
           <Menu.Item key="/budget" icon={<FileSearchOutlined />}>
             <Link to="/budget">Consultar orçamento</Link>
@@ -47,8 +46,12 @@ function MenuComponent({ children }: MenuProps) {
           <Menu.Item key="/registerBudget" icon={<FormOutlined />}>
             <Link to="/registerBudget">Cadastrar Orçamento</Link>
           </Menu.Item>
-          <Menu.Item key="4" icon={<LogoutOutlined />}>
-            <Link to="/">Sair</Link>
+          <Menu.Item
+            key="4"
+            icon={<LogoutOutlined />}
+
+          >
+            Sair
           </Menu.Item>
         </Menu>
       </Sider>

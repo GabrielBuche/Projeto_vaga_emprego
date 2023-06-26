@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import {  Modal } from 'antd';
+import { Modal } from 'antd';
+
+import { ErrorText } from './styles'
+import { useNavigate } from 'react-router-dom';
+
 import { InputComponent } from '../input';
 import { InputPassword } from '../InputPassword';
+import { useAuth } from '../../context/authProvider/useAuth';
 
 interface ModalProps {
     openModal: boolean
@@ -9,20 +14,45 @@ interface ModalProps {
 }
 
 export function ModalSingUp({ openModal, setOpenModal }: ModalProps) {
-    const [ name, setName] = useState<string>('')
-    const [ password, setPassword] = useState<string>('')
-    const [ repeatPassword, setRepeatPassword] = useState<string>('')
-    const [ email, setEmail] = useState<string>('')
+    const navigate = useNavigate()
+    const { Register, token } = useAuth();
+    const [userName, setName] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [repeatPassword, setRepeatPassword] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [error, setError] = useState<string>('');
 
     const handleOk = () => {
-        if(email && name && repeatPassword === password){
-            setOpenModal(false);
-        } 
-    };
+
+        if (!userName && !password) {
+            setError('Insira um email e senha');
+            return;
+        }
+
+        if (!userName) {
+            setError('Insira um Email');
+            return;
+        }
+
+        if (!password) {
+            setError('Insira uma senha');
+            return;
+        }
+
+        setError('');
     
-    const handleCancel = () => {
-        setOpenModal(false);
-    };
+        
+
+        Register(userName, email, password, repeatPassword)   
+        .then(() => {
+            if (token) {
+              navigate('/budget');
+            }
+          })
+          .catch(error => {
+            console.error('Erro de login:', error);
+          });
+    }; 
 
     return (
         <>
@@ -30,15 +60,16 @@ export function ModalSingUp({ openModal, setOpenModal }: ModalProps) {
                 title="Cadastre-se"
                 open={openModal}
                 onOk={handleOk}
-                onCancel={handleCancel}
+                onCancel={()=> setOpenModal(false)}
                 keyboard={true}
                 okText='Cadastrar'
-              
+
             >
+                {error && <ErrorText>{error}</ErrorText>}
                 <InputComponent
                     placeholder='Nome'
                     type='Text'
-                    value={name}
+                    value={userName}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <InputComponent

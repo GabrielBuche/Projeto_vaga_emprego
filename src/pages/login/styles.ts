@@ -73,3 +73,7 @@ export const ButtonSingUp = styled(Button)`
 `;
 
 
+export const ErrorText = styled.div`
+  margin-bottom: 10px;
+  
+`;
