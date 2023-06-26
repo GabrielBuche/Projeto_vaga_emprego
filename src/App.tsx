@@ -6,10 +6,6 @@ import Routes from './routes/Routes'
 import './styles/styles.css'
 
 
-
-
-
-
 function App() {
 
   return (

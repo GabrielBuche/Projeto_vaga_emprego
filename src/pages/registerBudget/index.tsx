@@ -1,84 +1,68 @@
-import { useState } from 'react';
-import { MenuComponent } from '../../components/Menu'
-import { Container, ContainerInput } from './styles'
-// import { InputComponent } from '../../components/input'
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Form, Input, Button } from 'antd';
+import  MenuComponent from '../../components/Menu'
+import { Container, Content } from './styles'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Space } from 'antd';
 
-interface Item {
-    name: string;
-    quotes: any;
-}
+const onFinish = (values: any) => {
+    console.log('Received values of form:', values);
+};
 
 export default function RegisterBudget() {
-    const [items, setItems] = useState<Item[]>([{ name: '', quotes: ['', '', ''] }]);
 
-    const handleItemChange = (index: number, field: keyof Item, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[index][field] = value;
-        setItems(updatedItems);
-    };
-
-    const handleQuoteChange = (itemIndex: number, quoteIndex: number, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[itemIndex].quotes[quoteIndex] = value;
-        setItems(updatedItems);
-    };
-
-    const handleAddItem = () => {
-        setItems([...items, { name: '', quotes: ['', '', ''] }]);
-    };
-
-    const handleRemoveItem = (index: number) => {
-        const updatedItems = [...items];
-        updatedItems.splice(index, 1);
-        setItems(updatedItems);
-    };
-
-    const handleSubmit = (values: any) => {
-        console.log(values);
-
-    };
     return (
         <Container>
             <MenuComponent>
-                <Form onFinish={handleSubmit}>
-                    {items.map((item, itemIndex) => (
-                        <div key={itemIndex}>
-                            <Form.Item label="Nome do item">
-                                <Input
-                                    value={item.name}
-                                    onChange={(e) => handleItemChange(itemIndex, 'name', e.target.value)}
-                                />
-                            </Form.Item>
-                            {item.quotes.map((quote, quoteIndex) => (
-                                <Form.Item key={quoteIndex} label={`Cotação ${quoteIndex + 1}`}>
-                                    <Input
-                                        value={quote}
-                                        onChange={(e) => handleQuoteChange(itemIndex, quoteIndex, e.target.value)}
-                                    />
-                                </Form.Item>
-                            ))}
-                            <Button
-                                type="dashed"
-                                onClick={() => handleRemoveItem(itemIndex)}
-                                icon={<MinusCircleOutlined />}
-                                danger
-                            >
-                                Remover Item
+                <Content>
+                    <Form
+                        name="dynamic_form_nest_item"
+                        onFinish={onFinish}
+                        style={{ maxWidth: 600 }}
+                        autoComplete="off"
+                    >
+                        <Form.List name="users">
+                            {(fields, { add, remove }) => (
+                                <>
+                                    {fields.map(({ key, name, ...restField }) => (
+                                        <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                            <Form.Item
+                                                {...restField}
+                                                name={[name, 'productName']}
+                                                rules={[{ required: true, message: 'Digite o nome do Produto' }]}
+                                            >
+                                                <Input placeholder="Produto" />
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...restField}
+                                                name={[name, 'price']}
+                                                rules={[{ required: true, message: 'Digite o preço' }]}
+                                            >
+                                                <Input placeholder="Preço" />
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...restField}
+                                                name={[name, 'enterprise']}
+                                                rules={[{ required: true, message: 'Digite o nome da empresa' }]}
+                                            >
+                                                <Input placeholder="Empresa" />
+                                            </Form.Item>
+                                            <MinusCircleOutlined onClick={() => remove(name)} />
+                                        </Space>
+                                    ))}
+                                    <Form.Item>
+                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                            Novo cadastro
+                                        </Button>
+                                    </Form.Item>
+                                </>
+                            )}
+                        </Form.List> 
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
                             </Button>
-                        </div>
-                    ))}
-                    <Button type="dashed" onClick={handleAddItem} block icon={<PlusOutlined />}>
-                        Adicionar Item
-                    </Button>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" style={{ marginTop: '16px' }}>
-                            Cadastrar Orçamento
-                        </Button>
-                    </Form.Item>
-                </Form>
-
+                        </Form.Item>
+                    </Form>
+                </Content>
             </MenuComponent>
         </Container>
     )

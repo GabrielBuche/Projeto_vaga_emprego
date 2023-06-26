@@ -1,6 +1,6 @@
 import type { ColumnsType } from 'antd/es/table';
 import { Input, Space, Tag } from 'antd';
-import  {MenuComponent}  from '../../components/Menu'
+import  MenuComponent  from '../../components/Menu'
 import { TableComponent } from '../../components/table';
 import { Container } from './styles'
 import { useState } from 'react';
@@ -83,9 +83,9 @@ export default function Budget() {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
+                <Space size="large">
+                    <a> {record.name}</a>
+                    <a>Aprovar</a>
                 </Space>
             ),
         },

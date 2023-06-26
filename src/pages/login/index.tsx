@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     LoginContainer,
     LoginCard,
@@ -14,10 +15,12 @@ import {
 import { ModalSingUp } from '../../components/modalSingUp';
 import { InputPassword } from '../../components/InputPassword';
 import { InputComponent } from '../../components/input';
+import { AuthContext } from '../../context/authProvider';
 
 
 export default function Login() {
-
+    const navigate = useNavigate()
+    const { Authenticate } = useContext(AuthContext);
     const [userName, setUserName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
@@ -27,12 +30,22 @@ export default function Login() {
         setOpenModalSingUp(!openModalSingUp);
     }
 
+    const HandleClickLogin = () => {
+        Authenticate(userName, password)
+            .then(() => {
+                navigate('/dashboard');
+            })
+            .catch(error => {
+                console.error('Erro de login:', error);
+            });
+    };
+
     return (
         <LoginContainer>
             <LoginCard>
                 <InputComponent
                     type="text"
-                    placeholder="Usuário"
+                    placeholder="Email"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                 />
@@ -44,14 +57,16 @@ export default function Login() {
                 />
                 <ButtonLogin
                     type="primary"
-                   
+                    onClick={HandleClickLogin}
                 >
                     <TextBtn>
                         Entrar
                     </TextBtn>
                 </ButtonLogin>
                 <ContainerSingUpText>
-                    <SingUp type={'link'}>
+                    <SingUp
+                        type={'link'}
+                    >
                         <Text>Esqueceu a senha ?</Text>
                         Clique aqui!
                     </SingUp>
