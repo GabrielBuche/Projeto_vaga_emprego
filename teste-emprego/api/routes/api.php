@@ -8,9 +8,9 @@ use App\Http\Controllers\ProductsController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/products', [ProductsController::class, 'index']);
     Route::post('/products', [ProductsController::class, 'store']);
+    Route::patch('/products/{id}', [ProductsController::class, 'update']);;
 });

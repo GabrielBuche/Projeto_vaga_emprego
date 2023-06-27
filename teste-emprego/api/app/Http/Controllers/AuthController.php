@@ -21,14 +21,15 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'gerente' => false, 
         ]);
 
         $token = $user->createToken('Token')->plainTextToken;
 
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ];
 
         return response($response, 201);

@@ -21,5 +21,17 @@ class Products extends Model
         'company' => 'required|string|max:255',
         'value' => 'required|numeric',
         'description' => 'nullable|string',
+        'approved' => 'boolean'
     ];
+
+    public static function createMultiple(array $productsData)
+    {
+        $createdProducts = [];
+
+        foreach ($productsData as $productData) {
+            $createdProducts[] = static::create($productData);
+        }
+
+        return $createdProducts;
+    }
 }

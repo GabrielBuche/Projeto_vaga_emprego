@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('company');
             $table->decimal('value', 8, 2);
             $table->text('description');
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }
