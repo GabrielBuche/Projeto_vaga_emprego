@@ -1,4 +1,4 @@
-import { Button, Input, Modal } from 'antd';
+import { Button } from 'antd';
 import styled from 'styled-components';
 
 
@@ -73,3 +73,7 @@ export const ButtonSingUp = styled(Button)`
 `;
 
 
+export const ErrorText = styled.div`
+  margin-bottom: 10px;
+  
+`;

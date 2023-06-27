@@ -1,111 +1,89 @@
-import type { ColumnsType } from 'antd/es/table';
-import { Input, Space, Tag } from 'antd';
-import  MenuComponent  from '../../components/Menu'
+import { useEffect } from 'react';
+import { Input, Tag, Button } from 'antd';
+import MenuComponent from '../../components/Menu';
 import { TableComponent } from '../../components/table';
-import { Container } from './styles'
+import { Container } from './styles';
 import { useState } from 'react';
-
-
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-}
+import { UseProducts } from '../../context/ProducstProvider/useProducts';
+import { getUserLocalStorage } from '../../context/authProvider/utils';
 
 export default function Budget() {
-    const [searchText, setSearchText] = useState('');
-    const { Search } = Input;
+  const { ListProducts, ApproveProduct } = UseProducts();
+  const [searchText, setSearchText] = useState('');
+  const [data, setData] = useState([]);
+  const { Search } = Input;
+  const gerente = getUserLocalStorage().user.gerente;
 
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
+  useEffect(() => {
+    CallData();
+  }, []);
 
-    const columns: ColumnsType<DataType> = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text) => <a>{text}</a>,
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="large">
-                    <a> {record.name}</a>
-                    <a>Aprovar</a>
-                </Space>
-            ),
-        },
-    ];
+  async function CallData() {
+    const response = await ListProducts();
+    setData(response);
+  }
 
-    const filteredData = data.filter(item =>
-        Object.values(item).some(value =>
-          String(value).toLowerCase().includes(searchText.toLowerCase())
-        )
-      );
 
-    return (
-        <Container>
-            <MenuComponent>
-                <Search type="text"
-                    value={searchText}
-                    onChange={e => setSearchText(e.target.value)}
-                />
-                <TableComponent columns={columns} data={filteredData} />
-            </MenuComponent>
-        </Container>
+
+  const handleApprove = async (productId: string) => {
+
+    await ApproveProduct(productId);
+    CallData()
+  };
+
+  const columns = [
+    {
+      title: 'Nome',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Empresa',
+      dataIndex: 'company',
+      key: 'company',
+    },
+    {
+      title: 'Valor',
+      dataIndex: 'value',
+      key: 'value',
+    },
+    {
+      title: 'Descrição',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Aprovar',
+      dataIndex: 'approved',
+      key: 'approved',
+      render: (text: string, record: any) => (
+        <>
+          {text ? (
+            <Tag color="green">Aprovado</Tag>
+          ) : gerente === 1 ? (
+            <Button type="primary" onClick={() => handleApprove(record.id)}>
+              Aprovar Orçamento
+            </Button>
+          ) : (
+            <span>Em análise</span>
+          )}
+        </>
+      ),
+    },
+  ];
+
+  const filteredData = data.filter((item) =>
+    Object.values(item).some((value) =>
+      String(value).toLowerCase().includes(searchText.toLowerCase())
     )
+  );
+
+  return (
+    <Container>
+      <MenuComponent>
+        <Search type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+        <TableComponent columns={columns} data={filteredData} />
+      </MenuComponent>
+    </Container>
+  );
 }

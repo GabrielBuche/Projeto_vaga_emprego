@@ -1,14 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Navigate } from 'react-router-dom';
+import { getUserLocalStorage } from '../context/authProvider/utils';
 
-import Login from '../pages/login'
-import  Home  from '../pages/budget'
+interface RoutesProps{
+    children: any;
+}
 
-export default function AuthRoutes() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route index element={<Login />} />
-            </Routes>
-        </BrowserRouter>
-    )
+export default function AuthRoutes({children}: RoutesProps) {
+    const token = getUserLocalStorage().token;
+    return token ? children : <Navigate to='/'/>
 }
