@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal } from 'antd';
+import { Modal, notification } from 'antd';
 
 import { ErrorText } from './styles'
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ interface ModalProps {
 
 export function ModalSingUp({ openModal, setOpenModal }: ModalProps) {
     const navigate = useNavigate()
-    const { Register, token } = useAuth();
+    const { Register } = useAuth();
     const [userName, setName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [repeatPassword, setRepeatPassword] = useState<string>('')
@@ -25,34 +25,62 @@ export function ModalSingUp({ openModal, setOpenModal }: ModalProps) {
     const handleOk = () => {
 
         if (!userName && !password) {
-            setError('Insira um email e senha');
+            const errormsg = 'Insira um email e senha';
+      
+            const config = {
+              message: 'Erro',
+              description: errormsg,
+            };
+      
+            setError(errormsg);
+      
+            notification.error(config)
+            
             return;
         }
 
         if (!userName) {
-            setError('Insira um Email');
+            const errormsg = 'Insira um Email';
+      
+            const config = {
+              message: 'Erro',
+              description: errormsg,
+            };
+      
+            setError(errormsg);
+      
+            notification.error(config)
+            
             return;
         }
 
         if (!password) {
-            setError('Insira uma senha');
+            const errormsg = 'Insira uma senha';
+      
+            const config = {
+              message: 'Erro',
+              description: errormsg,
+            };
+      
+            setError(errormsg);
+      
+            notification.error(config)
+            
             return;
         }
 
         setError('');
-    
-        
 
-        Register(userName, email, password, repeatPassword)   
-        .then(() => {
-            if (token) {
-              navigate('/budget');
-            }
-          })
-          .catch(error => {
-            console.error('Erro de login:', error);
-          });
-    }; 
+
+
+        Register(userName, email, password, repeatPassword)
+
+            .then(() => {
+
+                navigate('/budget');
+
+            })
+    };
 
     return (
         <>
@@ -60,7 +88,7 @@ export function ModalSingUp({ openModal, setOpenModal }: ModalProps) {
                 title="Cadastre-se"
                 open={openModal}
                 onOk={handleOk}
-                onCancel={()=> setOpenModal(false)}
+                onCancel={() => setOpenModal(false)}
                 keyboard={true}
                 okText='Cadastrar'
 

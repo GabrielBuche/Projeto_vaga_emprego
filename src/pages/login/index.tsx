@@ -14,10 +14,11 @@ import { ModalSingUp } from '../../components/modalSingUp';
 import { InputPassword } from '../../components/InputPassword';
 import { InputComponent } from '../../components/input';
 import { useAuth } from '../../context/authProvider/useAuth';
+import { notification } from 'antd';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { Authenticate, token, Logout } = useAuth();
+  const { Authenticate, Logout } = useAuth();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [openModalSingUp, setOpenModalSingUp] = useState(false);
@@ -33,17 +34,49 @@ export default function Login() {
 
   const handleClickLogin = async () => {
     if (!userName && !password) {
-      setError('Insira um email e senha');
+
+      const errormsg = 'Insira um email e senha';
+      
+      const config = {
+        message: 'Erro',
+        description: errormsg,
+      };
+
+      setError(errormsg);
+
+      notification.error(config)
+      
       return;
     }
 
     if (!userName) {
-      setError('Insira um Email');
+      
+      const errormsg = 'Insira um Email';
+      
+      const config = {
+        message: 'Erro',
+        description: errormsg,
+      };
+
+      setError(errormsg);
+
+      notification.error(config)
+      
       return;
     }
 
     if (!password) {
-      setError('Insira uma senha');
+      const errormsg = 'Insira uma senha';
+      
+      const config = {
+        message: 'Erro',
+        description: errormsg,
+      };
+
+      setError(errormsg);
+
+      notification.error(config)
+      
       return;
     }
 
@@ -51,9 +84,9 @@ export default function Login() {
 
     Authenticate(userName, password)
       .then(() => {
-        if (token) {
-          navigate('/budget');
-        }
+
+        navigate('/budget');
+
       })
       .catch(error => {
         console.error('Erro de login:', error);

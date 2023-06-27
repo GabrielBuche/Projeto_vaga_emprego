@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import { api } from "../../services/api"
 import { IUser } from "../../types";
 
@@ -26,6 +27,15 @@ export async function LoginRequest(email: string, password: string) {
         return response.data;
 
     } catch (error) {
+
+        const errormsg = 'erro ao realizar login';
+
+        const config = {
+            message: 'Erro',
+            description: errormsg,
+        };
+
+        notification.error(config)
         return error
     }
 }
@@ -43,6 +53,14 @@ export async function RegisterRequest(name: string, email: string, password: str
         return response.data;
 
     } catch (error) {
+        const errormsg = 'erro ao realizar cadastro';
+
+        const config = {
+            message: 'Erro',
+            description: errormsg,
+        };
+
+        notification.error(config)
         return error
     }
 }
@@ -53,11 +71,20 @@ export async function Logout() {
                 'Authorization': `Bearer ${getUserLocalStorage().token}`
             }
         })
-        
+
         clearUserLocalStorage()
         return response;
 
     } catch (error) {
+        const errormsg = 'erro ao limpar o asyncStorage';
+
+        const config = {
+            message: 'Erro',
+            description: errormsg,
+        };
+
+        notification.error(config)
+
         return error
     }
 }
