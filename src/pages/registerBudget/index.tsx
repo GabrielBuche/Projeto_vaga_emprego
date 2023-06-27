@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import MenuComponent from '../../components/Menu'
 import { UseProducts } from '../../context/ProducstProvider/useProducts';
 import { Container, Content } from './styles'

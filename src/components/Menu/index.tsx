@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { UserOutlined, FormOutlined, LogoutOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { FormOutlined, LogoutOutlined, FileSearchOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { useAuth } from '../../context/authProvider/useAuth';
 import { getUserLocalStorage } from '../../context/authProvider/utils';

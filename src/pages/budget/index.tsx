@@ -23,11 +23,12 @@ export default function Budget() {
     setData(response);
   }
 
+
+
   const handleApprove = async (productId: string) => {
 
     await ApproveProduct(productId);
     CallData()
-
   };
 
   const columns = [
@@ -55,7 +56,7 @@ export default function Budget() {
       title: 'Aprovar',
       dataIndex: 'approved',
       key: 'approved',
-      render: (text, record) => (
+      render: (text: string, record: any) => (
         <>
           {text ? (
             <Tag color="green">Aprovado</Tag>
